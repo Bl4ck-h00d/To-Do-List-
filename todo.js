@@ -1,6 +1,9 @@
 const addbtn = document.querySelector('.btn');
 const inputTask = document.querySelector('#task');
 const cont = document.querySelector('.cont');
+var tasks=[];
+
+
 
 class item{
     constructor(itemName){
@@ -26,7 +29,15 @@ class item{
         edit_btn.innerHTML="EDIT";
         edit_btn.classList.add('edit-btn');
         edit_btn.addEventListener('click', function() {
-            input.disabled=false;
+            if(input.disabled == true){
+                input.disabled = !input.disabled;
+             }
+             else{
+                 input.disabled = !input.disabled;
+                 let indexof = tasks.indexOf(itemName);
+                 tasks[indexof] = input.value;
+                 window.localStorage.setItem("tasks", JSON.stringify(tasks));
+             }
             
         })
 
@@ -56,8 +67,18 @@ class item{
 addbtn.addEventListener('click', function(){
     if(inputTask.value!=""){
         new item(inputTask.value);
+        tasks.push(inputTask.value);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
         inputTask.value="";
     }
 
 })
+let n = JSON.parse(localStorage.getItem('tasks'))
+
+for(var i=0;i<n.length;i++)
+{
+    // console.log(tasks[i]);
+    new item(n[i]);
+}
 
